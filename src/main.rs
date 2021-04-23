@@ -176,18 +176,22 @@ fn check_if_gameover(board: [char; 9], moves: usize) ->  (GameState, Option<Play
     * Checks all cols, rows, and diagnol for winning moves.
     * If none is found and we are past total moves it is a tie!
      */
+    // Todo make iter
+    // Rows
     if board[0] == board[1] && board[1] == board[2] {
         (GameState::Ended, Some(board[0].into()))
     } else if board[3] == board[4] && board[4] == board[5] {
         (GameState::Ended, Some(board[3].into()))
     } else if board[6] == board[7] && board[7] == board[8] {
         (GameState::Ended, Some(board[6].into()))
+    // Cols
     } else if board[0] == board[4] && board[4] == board[8] {
         (GameState::Ended, Some(board[0].into()))
     } else if board[2] == board[4] && board[4] == board[6] {
         (GameState::Ended, Some(board[2].into()))
     } else if board[0] == board[3] && board[3] == board[6] {
         (GameState::Ended, Some(board[0].into()))
+    // Diags
     } else if board[1] == board[4] && board[4] == board[7] {
         (GameState::Ended, Some(board[1].into()))
     } else if board[2] == board[5] && board[5] == board[8] {
