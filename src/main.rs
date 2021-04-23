@@ -21,6 +21,7 @@ enum GameState {
 
 
 impl Into<char> for PlayerPiece {
+    // For displaying if needed our pieces
     fn into(self) -> char {
         if self == PlayerPiece::X  {
             'X'
@@ -31,6 +32,7 @@ impl Into<char> for PlayerPiece {
 }
 
 impl From<char> for PlayerPiece {
+    // For displaying if needed our pieces
     fn from(ch: char) -> Self {
         if ch == 'X' {
             PlayerPiece::X
@@ -43,6 +45,7 @@ impl From<char> for PlayerPiece {
 
 
 fn draw_board(state: [char; 9]) {
+    // Draw!
     println!("");
     println!("-------------");
     println!("| {} | {} | {} |", state[0], state[1], state[2]);
@@ -56,6 +59,7 @@ fn draw_board(state: [char; 9]) {
 
 
 fn ask_player_piece() -> PlayerPiece {
+    // Pick your piece!
     println!("Choose piece?");
     println!("1.) X 2.) O");
     let mut buffer = String::new();
@@ -75,6 +79,7 @@ fn ask_player_piece() -> PlayerPiece {
 
 
 fn ask_whos_first() -> PlayerType {
+    // Ask who goes first
     println!("Welcome to Tic Tac Toe!");
     println!("Who goes first?");
     println!("1.) You 2.) Computer");
@@ -93,7 +98,10 @@ fn ask_whos_first() -> PlayerType {
 
 
 fn is_open(board: [char; 9], square: usize) -> bool {
-    // Expects index in array positions
+    /*
+     * Sees if square is open on board.
+     * Expects index in array positions (first = 0)
+     */
     if board[square] != PlayerPiece::O.into() && board[square] != PlayerPiece::X.into() {
         true
     } else {
@@ -103,7 +111,12 @@ fn is_open(board: [char; 9], square: usize) -> bool {
 
 
 fn computer_move(board: [char; 9], my_piece: PlayerPiece, their_piece: PlayerPiece) -> usize {
-    // Todo minimax
+    /*  
+     * Basic computer playing method which iters each open square and sees if move for either
+     * the Computer is a winning move and picks that move or if opponent move would win and
+     * blocks that move.  If no move is found than just picks first open square.  Otherwise
+     * if no moves than returns 0 signaling a tie.
+     */
     for square in 0..9 {
         if is_open(board, square) {
             let mut our_new_board = board.clone();
@@ -129,6 +142,7 @@ fn computer_move(board: [char; 9], my_piece: PlayerPiece, their_piece: PlayerPie
 
 
 fn ask_move(board: [char; 9]) -> usize {
+    // Ask player to input move
     println!("Where to place? (1-9)");
     let mut buffer = String::new();
     match io::stdin().read_line(&mut buffer) {
@@ -153,10 +167,15 @@ fn ask_move(board: [char; 9]) -> usize {
 
 
 fn fill_square(board: &mut [char; 9], player_move: usize, player_piece: PlayerPiece) {
+    // Places move on board
     board[player_move - 1] = player_piece.into();
 }
 
 fn check_if_gameover(board: [char; 9], moves: usize) ->  (GameState, Option<PlayerPiece>) {
+    /*
+    * Checks all cols, rows, and diagnol for winning moves.
+    * If none is found and we are past total moves it is a tie!
+     */
     if board[0] == board[1] && board[1] == board[2] {
         (GameState::Ended, Some(board[0].into()))
     } else if board[3] == board[4] && board[4] == board[5] {
@@ -182,6 +201,7 @@ fn check_if_gameover(board: [char; 9], moves: usize) ->  (GameState, Option<Play
 
 
 fn ask_if_play_again() -> bool {
+    // Ask to play again
     println!("Play again? 1.) Yes 2.) No");
     let mut buffer = String::new();
     match io::stdin().read_line(&mut buffer) {
@@ -197,6 +217,12 @@ fn ask_if_play_again() -> bool {
 
 
 fn play_game() {
+    /*
+    * Our main game loop.
+    * Init who goes first, pieces, and the board.
+    * loop game state of playing.
+    * Asks player and computer to move until win condition.
+     */
     let mut turn = ask_whos_first();
     let mut winner: Option<PlayerPiece> = None;
     let player_piece = ask_player_piece();
