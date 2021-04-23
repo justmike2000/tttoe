@@ -104,7 +104,27 @@ fn is_open(board: [char; 9], square: usize) -> bool {
 
 fn computer_move(board: [char; 9], my_piece: PlayerPiece, their_piece: PlayerPiece) -> usize {
     // Todo minimax
-    1
+    for square in 0..9 {
+        if is_open(board, square) {
+            let mut our_new_board = board.clone();
+            our_new_board[square] = my_piece.clone().into();
+            let our_win = check_if_gameover(our_new_board, 0);
+            let mut their_new_board = board.clone();
+            their_new_board[square] = their_piece.clone().into();
+            let their_win = check_if_gameover(their_new_board, 0);
+            if our_win.0 == GameState::Ended && our_win.1.clone().unwrap() == my_piece {
+                return square + 1
+            } else if their_win.0 == GameState::Ended && their_win.1.clone().unwrap() == their_piece {
+                return square + 1
+            }
+        }
+    }
+    for square in 0..9 {
+        if is_open(board, square) {
+            return square + 1
+        }
+    }
+    0
 }
 
 
@@ -199,8 +219,10 @@ fn play_game() {
             turn = PlayerType::Computer;
         } else {
             let computer_move = computer_move(board, computer_piece.clone(), player_piece.clone());
-            fill_square(&mut board, computer_move, computer_piece.clone());
-            turn = PlayerType::Player;
+            if computer_move != 0 {
+                fill_square(&mut board, computer_move, computer_piece.clone());
+                turn = PlayerType::Player;
+            }
         }
         draw_board(board);
         let result = check_if_gameover(board, moves);
