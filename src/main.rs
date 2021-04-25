@@ -132,6 +132,9 @@ fn computer_move(board: [char; 9], my_piece: PlayerPiece, their_piece: PlayerPie
             }
         }
     }
+    if is_open(board, 4) {
+        return 5
+    }
     for square in 0..9 {
         if is_open(board, square) {
             return square + 1
