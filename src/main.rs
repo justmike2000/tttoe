@@ -21,7 +21,7 @@ enum GameState {
 
 
 impl Into<char> for PlayerPiece {
-    // For displaying if needed our pieces
+    // For displaying, if needed, our pieces
     fn into(self) -> char {
         if self == PlayerPiece::X  {
             'X'
@@ -32,7 +32,7 @@ impl Into<char> for PlayerPiece {
 }
 
 impl From<char> for PlayerPiece {
-    // For displaying if needed our pieces
+    // For displaying, if needed, our pieces
     fn from(ch: char) -> Self {
         if ch == 'X' {
             PlayerPiece::X
