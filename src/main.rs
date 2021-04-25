@@ -139,7 +139,7 @@ fn computer_move(board: [char; 9], my_piece: PlayerPiece, their_piece: PlayerPie
         return 5
     } // Try any
     match open_squares.first() {
-        Some(o) => *o,
+        Some(o) => *o + 1,
         None => 0,
     }
 }
