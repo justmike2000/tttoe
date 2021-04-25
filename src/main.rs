@@ -258,7 +258,6 @@ fn play_game() {
         let result = check_if_gameover(board, moves);
         game_state = result.0;
         winner = result.1;
-        println!("{:?}", game_state);
     }
     match winner {
         Some(w) => {
