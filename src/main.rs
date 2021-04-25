@@ -114,11 +114,13 @@ fn computer_move(board: [char; 9], my_piece: PlayerPiece, their_piece: PlayerPie
     /*  
      * Basic computer playing method which iters each open square and sees if move for either
      * the Computer is a winning move and picks that move or if opponent move would win and
-     * blocks that move.  If no move is found than just picks first open square.  Otherwise
-     * if no moves than returns 0 signaling a tie.
+     * blocks that move.  If no move is found than just picks first open square if the middle
+     * square is not open.  If no moves than returns 0 signaling a tie.
      */
+    let mut open_squares = vec![];
     for square in 0..9 {
         if is_open(board, square) {
+            open_squares.push(square);
             let mut our_new_board = board.clone();
             our_new_board[square] = my_piece.clone().into();
             let our_win = check_if_gameover(our_new_board, 0);
@@ -132,15 +134,14 @@ fn computer_move(board: [char; 9], my_piece: PlayerPiece, their_piece: PlayerPie
             }
         }
     }
+    // Try middle square
     if is_open(board, 4) {
         return 5
+    } // Try any
+    match open_squares.first() {
+        Some(o) => *o,
+        None => 0,
     }
-    for square in 0..9 {
-        if is_open(board, square) {
-            return square + 1
-        }
-    }
-    0
 }
 
 
