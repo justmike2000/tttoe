@@ -245,7 +245,7 @@ fn play_game() {
 
     draw_board(board);
 
-    while game_state == GameState::Playing {
+    while game_state == GameState::Playing && moves < 9 {
         moves += 1;
         if turn == PlayerType::Player {
             let player_move = ask_move(board);
